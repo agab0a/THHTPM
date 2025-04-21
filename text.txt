@@ -1,0 +1,224 @@
+Dưới đây là hướng dẫn chi tiết cách làm bài tập trên bằng Apache NetBeans IDE, chia thành từng phần đúng theo yêu cầu đề:
+
+
+---
+
+I. TẠO DỰ ÁN MỚI TRONG NETBEANS
+
+Bước 1: Tạo Project mới
+
+1. Mở Apache NetBeans IDE.
+
+
+2. Chọn File > New Project.
+
+
+3. Chọn Java with Ant > Java Application (hoặc tùy phiên bản, chọn "Java" rồi "Java Application").
+
+
+4. Đặt tên project: HotenSV_MaSV (không dấu, ví dụ: NguyenVanA_123456).
+
+
+5. Nhấn Finish.
+
+
+
+
+---
+
+II. CÂU 1 (L1 - 4 điểm)
+
+(a) Tạo file XML: THUVIEN.xml
+
+Bước 1: Tạo file XML
+
+1. Nhấp phải vào src > New > Other > XML > XML Document.
+
+
+2. Đặt tên là: THUVIEN.xml.
+
+
+3. Chọn “Well-Formed Document”, nhấn Finish.
+
+
+
+Bước 2: Nhập nội dung sau vào THUVIEN.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<TV TenTV="Khu A Đại học Công nghiệp">
+  <NhaXB TenNhaXB="Giáo dục">
+    <Sach MaSach="S001">
+      <TenSach>Tin văn phòng</TenSach>
+      <TheLoai>Tin học</TheLoai>
+      <SoTrang>120</SoTrang>
+    </Sach>
+    <Sach MaSach="S002">
+      <TenSach>Kế toán doanh nghiệp</TenSach>
+      <TheLoai>Kinh tế</TheLoai>
+      <SoTrang>180</SoTrang>
+    </Sach>
+  </NhaXB>
+</TV>
+
+
+---
+
+(b) Tạo file XSD ràng buộc dữ liệu: THUVIEN.xsd
+
+1. Nhấp phải src > New > XML > XML Schema.
+
+
+2. Đặt tên là THUVIEN.
+
+
+3. Trong file THUVIEN.xsd, chỉnh sửa thành:
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="TV">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="NhaXB" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Sach" maxOccurs="10">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TenSach" type="xs:string"/>
+                    <xs:element name="TheLoai" type="xs:string"/>
+                    <xs:element name="SoTrang">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:int">
+                          <xs:minInclusive value="50"/>
+                          <xs:maxInclusive value="400"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="MaSach" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:length value="6"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="TenNhaXB" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="Giáo dục"/>
+                  <xs:enumeration value="Tuổi trẻ"/>
+                  <xs:enumeration value="Khoa học kỹ thuật"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="TenTV" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+
+Bước 4: Ràng buộc file XML với XSD
+
+1. Mở THUVIEN.xml.
+
+
+2. Thêm dòng này sau dòng khai báo XML:
+
+
+
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="THUVIEN.xsd"
+
+
+---
+
+III. CÂU 2 (L1 - 2 điểm)
+
+Không cần tạo giao diện Java Swing mà chỉ cần viết thêm một file XML chứa tên nhà xuất bản và danh sách sách tương ứng.
+
+
+Ví dụ: file GiaoDuc_Sach.xml
+
+
+---
+
+IV. CÂU 3 (L2 - 4 điểm)
+
+(a) Tạo file THUVIEN.xsl hiển thị thông tin
+
+1. Tạo file mới: New > Other > XML > XSLT Stylesheet
+
+
+2. Đặt tên: THUVIEN.xsl.
+
+
+
+Nội dung mẫu:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <xsl:template match="/">
+    <html>
+    <head>
+      <title>Danh mục sách</title>
+    </head>
+    <body>
+      <h2>Danh mục sách</h2>
+      <p>Nhà xuất bản: 
+        <xsl:value-of select="TV/NhaXB/@TenNhaXB"/>
+      </p>
+      <table border="1">
+        <tr>
+          <th>STT</th>
+          <th>Tên sách</th>
+          <th>Số trang</th>
+          <th>Giá</th>
+        </tr>
+        <xsl:for-each select="TV/NhaXB/Sach">
+          <tr>
+            <td><xsl:value-of select="position()"/></td>
+            <td><xsl:value-of select="TenSach"/></td>
+            <td><xsl:value-of select="SoTrang"/></td>
+            <td>
+              <xsl:choose>
+                <xsl:when test="SoTrang &gt; 100">
+                  <xsl:text>40000</xsl:text>
+                </xsl:when>
+                <xsl:when test="SoTrang &gt;= 50">
+                  <xsl:text>30000</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:text>20000</xsl:text>
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </table>
+    </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>
+
+(b) Kết hợp XML và XSL để xem trên trình duyệt:
+
+Thêm dòng sau vào đầu file THUVIEN.xml (trước <TV>):
+
+<?xml-stylesheet type="text/xsl" href="THUVIEN.xsl"?>
+
+Mở file THUVIEN.xml bằng trình duyệt để thấy kết quả.
+
+
+---
+
+Bạn muốn mình tạo mẫu các file .xml, .xsd, .xsl để bạn chỉ cần copy-dán không? Hay muốn tiếp tục với phần Java xử lý file XML?
+
