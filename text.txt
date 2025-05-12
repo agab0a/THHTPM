@@ -1,145 +1,386 @@
-Dưới đây là toàn bộ nội dung của 3 file: congty.xml, congty.xsd, và congty.xsl theo yêu cầu bài kiểm tra.
+Dưới đây là hướng dẫn chi tiết tạo và chạy dự án Console trong Visual Studio 2022 theo yêu cầu bài tập:
 
 
 ---
 
-1. File congty.xml
+1. Tạo dự án mới
 
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="congty.xsl"?>
-<congty xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="congty.xsd">
-    <phongban>
-        <tenphong>Tổ chức</tenphong>
-        <dienthoai>0487346576</dienthoai>
-        <nhanvien>
-            <manv>nv01</manv>
-            <hoten>Lê Thị Thảo</hoten>
-            <trinhdo>Đại học</trinhdo>
-            <sonamcongtac>5</sonamcongtac>
-        </nhanvien>
-        <nhanvien>
-            <manv>nv02</manv>
-            <hoten>Nguyễn Phi Hùng</hoten>
-            <trinhdo>Cao đẳng</trinhdo>
-            <sonamcongtac>3</sonamcongtac>
-        </nhanvien>
-    </phongban>
+1. Mở Visual Studio 2022:
+Khởi động Visual Studio 2022.
 
-    <phongban>
-        <tenphong>Đào tạo</tenphong>
-        <dienthoai>0487346789</dienthoai>
-        <nhanvien>
-            <manv>nv03</manv>
-            <hoten>Trần Văn Huy</hoten>
-            <trinhdo>Thạc sĩ</trinhdo>
-            <sonamcongtac>6</sonamcongtac>
-        </nhanvien>
-        <nhanvien>
-            <manv>nv04</manv>
-            <hoten>Phạm Hồng Ánh</hoten>
-            <trinhdo>Đại học</trinhdo>
-            <sonamcongtac>2</sonamcongtac>
-        </nhanvien>
-    </phongban>
-</congty>
+
+2. Tạo dự án mới:
+
+Ở màn hình Start (hoặc chọn File > New > Project), chọn "Create a new project."
+
+Trong hộp tìm kiếm, nhập từ khóa “Console” để lọc ra các loại dự án Console App.
+
+Chọn mẫu "Console App (.NET Core)" hoặc "Console App (.NET 6/7)" (tùy thuộc vào phiên bản bạn có) và bấm "Next".
+
+
+
+3. Đặt tên dự án:
+
+Trong ô “Project name”, nhập theo quy tắc:
+HoTen_masv_proj61
+(ví dụ: NguyenLeHa_201987435_proj61).
+
+Chọn vị trí lưu (Location) và tên Solution (bạn có thể giữ nguyên tên dự án cho Solution nếu muốn).
+
+Bấm "Create".
+
+
+
 
 
 ---
 
-2. File congty.xsd
+2. Cài đặt mã nguồn
 
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="congty">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="phongban" maxOccurs="unbounded">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="tenphong" type="xs:string"/>
-              <xs:element name="dienthoai" type="xs:string"/>
-              <xs:element name="nhanvien" maxOccurs="unbounded">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="manv" type="xs:string"/>
-                    <xs:element name="hoten" type="xs:string"/>
-                    <xs:element name="trinhdo" type="xs:string"/>
-                    <xs:element name="sonamcongtac" type="xs:integer"/>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-</xs:schema>
+Cách 1: Sử dụng một file Program.cs cho toàn bộ code
+
+1. Mở file Program.cs:
+Sau khi tạo dự án, Visual Studio sẽ tự động mở file Program.cs. Nếu dự án của bạn sử dụng mô hình "top-level statements" (không có lớp Program rõ ràng), bạn có thể chuyển đổi sang kiểu truyền thống bằng cách:
+
+Xóa mã mặc định (ví dụ: dòng Console.WriteLine("Hello, World!");).
+
+Tạo thêm namespace và các lớp như sau:
+
+
+
+2. Copy mã nguồn đã cung cấp:
+Chép toàn bộ mã nguồn dưới đây vào file Program.cs (hoặc bạn có thể tách các lớp thành file riêng nhưng sau đây hướng dẫn với một file duy nhất):
+
+using System;
+using System.Collections.Generic;
+
+namespace NguyenLeHa_201987435_proj61
+{
+    // Lớp Person
+    public class Person
+    {
+        public int id;
+        public string name;
+        public string address;
+
+        // Hàm khởi tạo không tham số
+        public Person()
+        {
+            id = 0;
+            name = "";
+            address = "";
+        }
+
+        // Hàm khởi tạo có tham số
+        public Person(int id, string name, string address)
+        {
+            this.id = id;
+            this.name = name;
+            this.address = address;
+        }
+
+        // Phương thức nhập dữ liệu
+        public virtual void Input()
+        {
+            Console.Write("Nhập id: ");
+            id = int.Parse(Console.ReadLine());
+            Console.Write("Nhập tên: ");
+            name = Console.ReadLine();
+            Console.Write("Nhập địa chỉ: ");
+            address = Console.ReadLine();
+        }
+
+        // Phương thức xuất dữ liệu
+        public virtual void Output()
+        {
+            Console.WriteLine("Id: " + id + "\tTên: " + name + "\tĐịa chỉ: " + address);
+        }
+    }
+
+    // Lớp Student kế thừa từ Person
+    public class Student : Person
+    {
+        public byte maths;   // điểm toán
+        public byte physics; // điểm lý
+
+        // Hàm khởi tạo không tham số
+        public Student() : base()
+        {
+            maths = 0;
+            physics = 0;
+        }
+
+        // Hàm khởi tạo có tham số (id, name, address, maths, physics)
+        public Student(int id, string name, string address, byte maths, byte physics)
+            : base(id, name, address)
+        {
+            this.maths = maths;
+            this.physics = physics;
+        }
+
+        // Phương thức nhập dữ liệu cho Student
+        public override void Input()
+        {
+            // Gọi phương thức nhập của lớp cha để nhập id, name, address
+            base.Input();
+            Console.Write("Nhập điểm toán: ");
+            maths = byte.Parse(Console.ReadLine());
+            Console.Write("Nhập điểm lý: ");
+            physics = byte.Parse(Console.ReadLine());
+        }
+
+        // Phương thức xuất dữ liệu cho Student
+        public override void Output()
+        {
+            base.Output();
+            Console.WriteLine("Điểm toán: " + maths + "\tĐiểm lý: " + physics + "\tTổng điểm: " + Total());
+        }
+
+        // Phương thức tính tổng điểm = toán + lý
+        public int Total()
+        {
+            return maths + physics;
+        }
+    }
+
+    class Program
+    {
+        // Sử dụng danh sách lưu trữ sinh viên
+        static List<Student> students = new List<Student>();
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.WriteLine("===== MENU =====");
+                Console.WriteLine("1. Thêm một sinh viên");
+                Console.WriteLine("2. Hiển thị danh sách sinh viên");
+                Console.WriteLine("3. Tìm kiếm sinh viên theo id");
+                Console.WriteLine("4. Tìm kiếm sinh viên theo address");
+                Console.WriteLine("5. Xóa một sinh viên theo id");
+                Console.WriteLine("6. Kết thúc chương trình");
+                Console.Write("Chọn chức năng: ");
+                int choice = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+
+                switch (choice)
+                {
+                    case 1:
+                        AddStudent();
+                        break;
+                    case 2:
+                        DisplayStudents();
+                        break;
+                    case 3:
+                        SearchById();
+                        break;
+                    case 4:
+                        SearchByAddress();
+                        break;
+                    case 5:
+                        DeleteById();
+                        break;
+                    case 6:
+                        Console.WriteLine("Kết thúc chương trình!");
+                        return;
+                    default:
+                        Console.WriteLine("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                        break;
+                }
+                Console.WriteLine();
+            }
+        }
+
+        // Phương thức thêm sinh viên
+        static void AddStudent()
+        {
+            Student s = new Student();
+            Console.WriteLine("Nhập thông tin sinh viên:");
+            s.Input();
+            students.Add(s);
+            Console.WriteLine("Thêm sinh viên thành công!");
+        }
+
+        // Phương thức hiển thị danh sách sinh viên
+        static void DisplayStudents()
+        {
+            Console.WriteLine("Danh sách sinh viên:");
+            if (students.Count == 0)
+            {
+                Console.WriteLine("Không có sinh viên nào.");
+            }
+            else
+            {
+                foreach (Student s in students)
+                {
+                    s.Output();
+                    Console.WriteLine("----------------------");
+                }
+            }
+        }
+
+        // Phương thức tìm kiếm sinh viên theo id
+        static void SearchById()
+        {
+            Console.Write("Nhập id sinh viên cần tìm: ");
+            int id = int.Parse(Console.ReadLine());
+            bool found = false;
+            foreach (Student s in students)
+            {
+                if (s.id == id)
+                {
+                    Console.WriteLine("Tìm thấy sinh viên:");
+                    s.Output();
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                Console.WriteLine("Không tìm thấy sinh viên có id " + id);
+            }
+        }
+
+        // Phương thức tìm kiếm sinh viên theo address
+        static void SearchByAddress()
+        {
+            Console.Write("Nhập địa chỉ cần tìm: ");
+            string addr = Console.ReadLine();
+            bool found = false;
+            foreach (Student s in students)
+            {
+                // Tìm kiếm không phân biệt chữ hoa chữ thường
+                if (s.address.IndexOf(addr, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    if (!found)
+                    {
+                        Console.WriteLine("Danh sách sinh viên có địa chỉ chứa \"" + addr + "\":");
+                    }
+                    s.Output();
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                Console.WriteLine("Không tìm thấy sinh viên có địa chỉ chứa \"" + addr + "\"");
+            }
+        }
+
+        // Phương thức xóa sinh viên theo id
+        static void DeleteById()
+        {
+            Console.Write("Nhập id sinh viên cần xóa: ");
+            int id = int.Parse(Console.ReadLine());
+            Student studentToRemove = null;
+            foreach (Student s in students)
+            {
+                if (s.id == id)
+                {
+                    studentToRemove = s;
+                    break;
+                }
+            }
+            if (studentToRemove != null)
+            {
+                students.Remove(studentToRemove);
+                Console.WriteLine("Xóa sinh viên có id " + id + " thành công.");
+            }
+            else
+            {
+                Console.WriteLine("Không tìm thấy sinh viên có id " + id);
+            }
+        }
+    }
+}
+
+
+3. Lưu file:
+Bấm Ctrl+S hoặc chọn File > Save để lưu các thay đổi.
+
+
+
+Cách 2: Tách riêng các lớp (tùy chọn nâng cao)
+
+Nếu bạn muốn quản lý code tốt hơn bằng cách tạo các file riêng cho từng lớp:
+
+1. Thêm file mới cho lớp Person:
+
+Nhấn chuột phải vào dự án trong Solution Explorer, chọn Add > New Item...
+
+Chọn Class, đặt tên file là Person.cs.
+
+Copy đoạn mã lớp Person vào file Person.cs.
+
+
+
+2. Thêm file mới cho lớp Student:
+
+Tương tự, thêm file Student.cs và copy đoạn mã của lớp Student vào file đó.
+
+
+
+3. Chỉnh sửa file Program.cs:
+Để lại hàm Main và các phương thức xử lý menu trong Program.cs.
+
+Chú ý: Cần đảm bảo rằng các file đều nằm trong cùng một namespace (ở đây là NguyenLeHa_201987435_proj61).
+
+
 
 
 ---
 
-3. File congty.xsl
+3. Biên dịch và chạy dự án
 
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" 
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output method="html" encoding="UTF-8" indent="yes"/>
+1. Biên dịch dự án:
 
-  <xsl:template match="/">
-    <html>
-      <head>
-        <meta charset="UTF-8"/>
-        <title>Thông tin công ty</title>
-        <style>
-          table { border-collapse: collapse; width: 80%; margin: 20px auto; }
-          th, td { border: 1px solid black; padding: 8px; text-align: center; }
-          th { background-color: #87CEFA; }
-          h2 { text-align: center; color: blue; }
-        </style>
-      </head>
-      <body>
-        <h2>THÔNG TIN CÔNG TY</h2>
-        <xsl:for-each select="congty/phongban">
-          <table>
-            <tr>
-              <th colspan="4">
-                Tên phòng: <xsl:value-of select="tenphong"/> - 
-                Điện thoại: <xsl:value-of select="dienthoai"/>
-              </th>
-            </tr>
-            <tr>
-              <th>Mã nhân viên</th>
-              <th>Họ tên</th>
-              <th>Trình độ</th>
-              <th>Số năm công tác</th>
-            </tr>
-            <xsl:for-each select="nhanvien">
-              <tr>
-                <td><xsl:value-of select="manv"/></td>
-                <td><xsl:value-of select="hoten"/></td>
-                <td><xsl:value-of select="trinhdo"/></td>
-                <td><xsl:value-of select="sonamcongtac"/></td>
-              </tr>
-            </xsl:for-each>
-          </table>
-        </xsl:for-each>
-        <h3 style="text-align:center; margin-top:30px;">
-          Tổng số nhân viên: 
-          <xsl:value-of select="count(congty/phongban/nhanvien)"/>
-        </h3>
-      </body>
-    </html>
-  </xsl:template>
-</xsl:stylesheet>
+Chọn Build > Build Solution hoặc nhấn tổ hợp phím Ctrl+Shift+B.
+
+Kiểm tra cửa sổ Output để đảm bảo không có lỗi biên dịch.
+
+
+
+2. Chạy dự án:
+
+Nhấn F5 để chạy dưới chế độ Debug hoặc Ctrl+F5 để chạy mà không cần Debug.
+
+Cửa sổ Console sẽ hiển thị menu như trong đoạn code. Bạn có thể nhập các lựa chọn để kiểm tra chức năng thêm, hiển thị, tìm kiếm, và xóa sinh viên.
+
+
+
 
 
 ---
 
-Bạn có thể lưu 3 file này vào cùng thư mục trong NetBeans hoặc ngoài desktop để mở bằng trình duyệt xem giao diện.
+4. Kiểm tra và sử dụng ứng dụng
 
-Nếu bạn cần mình đóng gói sẵn 3 file này thành file .zip, mình có thể tạo và gửi lại ngay!
+1. Thêm sinh viên:
+Chọn mục 1 và nhập thông tin theo yêu cầu. Ví dụ:
+
+id: 1001
+
+tên: Nguyen Van A
+
+địa chỉ: Ha Noi
+
+điểm toán và điểm lý.
 
 
+
+2. Hiển thị danh sách sinh viên:
+Chọn mục 2 để xem danh sách các sinh viên đã nhập.
+
+
+3. Tìm kiếm và xóa sinh viên:
+Nhập id hoặc địa chỉ cần tìm (không phân biệt chữ hoa, chữ thường) để kiểm tra chức năng tìm kiếm.
+Chọn 5 và nhập id của sinh viên muốn xóa.
+
+
+4. Kết thúc chương trình:
+Chọn mục 6 để thoát.
+
+
+
+
+---
+
+Với hướng dẫn trên, bạn đã biết cách tạo dự án Console theo quy tắc đặt tên, cài đặt code theo yêu cầu của đề bài và chạy ứng dụng trong Visual Studio 2022. Nếu có bất kỳ thắc mắc nào thêm về cấu trúc project hoặc lập trình Console trong C#, bạn có thể tham khảo thêm tài liệu Microsoft hoặc các diễn đàn lập trình uy tín.
 
